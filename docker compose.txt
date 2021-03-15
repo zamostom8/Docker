@@ -1,0 +1,24 @@
+# docker-compose.yml
+version: '2.1'
+services:
+  filebeat:
+    image: docker.elastic.co/beats/filebeat
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - /home/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /data:/usr/share/filebeat/data
+    links:
+      - kibana
+      - elasticsearch
+  kibana:
+    image: docker.elastic.co/kibana/kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - "ELASTICSEARCH_URL=http://elasticsearch:9200"
+    depends_on:
+      - elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch
+    environment:
+      - "discovery.type=single-node"
