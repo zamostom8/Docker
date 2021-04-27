@@ -1,1 +1,26 @@
+# docker-compose.yml
+version: '2.1'
+services:
+  filebeat:
+    image: elastic/filebeat:7.7.0
+#    command: filebeat -e -strict.perms=false
+    restart: always
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /home/tom/data:/usr/share/filebeat/data
+        #   links:
+        #     - kibana
+        #      - elasticsearch
+    hostname: filebeat
+ 
+  metricbeat:
+    image: elastic/metricbeat:7.7.0
+    restart: always
+    volumes:
+      - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro 
+      - /proc:/hostfs/proc:ro 
+      - /:/hostfs:ro 
+    hostname: metricbeat
 
