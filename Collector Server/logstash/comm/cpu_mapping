@@ -1,1 +1,8 @@
+filter{
+
+ if [agent][type] in "metricbeat" and [event][dataset] in "system.cpu" {
+mutate{add_tag => "system cpu" }
+
+}
+}
 
