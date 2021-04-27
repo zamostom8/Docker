@@ -1,1 +1,18 @@
+# /home/tom/filebeat.yml
+filebeat.inputs:
+  - type: log
+    paths:
+      - /usr/share/filebeat/data/sys-data*
+    document_type: log
+
+#setup.template.name: "filebeat-"
+#setup.template.pattern: "filebeat-*"
+#setup.dashboards.enabled: true
+
+#setup.kibana:
+#  host: http://localhost:5601
+
+output.logstash:
+  hosts: ["192.168.1.73:5000"]
+#  index: "filebeat-%{+yyyy.MM.dd}"
 
