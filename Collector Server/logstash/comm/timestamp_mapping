@@ -1,0 +1,26 @@
+filter{
+
+ if [agent][type] in "filebeat" {
+
+ if [message] {
+  grok {
+  match => {"message" => "%{TIMESTAMP_ISO8601:[@metadata][isotimestamp]} debian %{GREEDYDATA:[@metadata][true_message]}"}
+  break_on_match => false
+  add_tag => ["system log"]
+}
+  if [@metadata][isotimestamp] {
+  date {
+ match=> ["[@metadata][isotimestamp]", "ISO8601" ]
+}
+}
+if [@metadata][true_message]
+{
+mutate {
+add_field => {"rest_message" => "%{[@metadata][true_message]}"}
+}
+}
+
+}
+
+}
+}
