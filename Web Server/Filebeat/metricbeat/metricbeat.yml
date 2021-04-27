@@ -1,1 +1,12 @@
-
+metricbeat.modules:
+- module: system
+  metricsets: ["cpu","memory","core","load","process"]
+  enabled: true
+  period: 5s
+  processes: ['.*']
+  cpu.metrics: ["normalized_percentages"]
+  core.metrics: ["percentages"]
+  
+output.logstash:
+  hosts: ["192.168.1.73:5000"]
+#  index: "filebeat-%{+yyyy.MM.dd}"
